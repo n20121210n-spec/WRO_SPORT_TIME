@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>WRO 2026 賽事管理系統</title>
+    <style>
+        :root { --bg: #0d0d0d; --panel: #1a1a1a; --text: #ffffff; --highlight: #00ffcc; --accent: #ffcc00; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: var(--panel); padding: 25px; border-radius: 15px; border: 2px solid var(--highlight); position: relative; }
+        .country-select { position: absolute; top: 20px; right: 20px; background: #333; color: white; padding: 5px; border: 1px solid var(--highlight); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { background-color: var(--highlight); color: #000; padding: 12px; }
+        td { border: 1px solid #444; padding: 10px; text-align: center; }
+        .sc { width: 50px; height: 40px; font-size: 1.2em; font-weight: bold; background: #222; color: #fff; border: 2px solid var(--highlight); text-align: center; }
+        button { background-color: var(--accent); color: #000; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <select id="countrySelect" class="country-select" onchange="translateUI(this.value)">
+        <option value="zh">繁體中文</option>
+        <option value="en">English</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+    </select>
+
+    <h2 data-i18n="title">⚡ WRO 2026 賽事管理系統</h2>
+    
+    <div style="background: #262626; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+        <input type="date" id="matchDate">
+        <input type="text" id="tName" placeholder="新隊伍名稱">
+        <button onclick="addTeam()" data-i18n="addBtn">➕ 新增隊伍</button>
+        <button onclick="saveMatch()" style="background:#00ffcc" data-i18n="saveBtn">💾 儲存紀錄</button>
+        <button onclick="toggleHistory()" style="background:#4488ff; color:white;" data-i18n="histBtn">📂 歷史紀錄</button>
+    </div>
+
+    <h3>📊 <span data-i18n="rank">積分排名</span></h3>
+    <table id="statsTable"><thead><tr>
+        <th data-i18n="del">刪除</th><th data-i18n="team">隊伍</th><th data-i18n="win">勝</th><th data-i18n="lose">敗</th><th data-i18n="score">球</th><th data-i18n="rule">違規項目</th>
+    </tr></thead><tbody></tbody></table>
+</div>
+
+<script>
+    const langDict = {
+        'zh': { title: '⚡ WRO 2026 賽事管理系統', addBtn: '➕ 新增隊伍', saveBtn: '💾 儲存紀錄', histBtn: '📂 歷史紀錄', rank: '積分排名', del: '刪除', team: '隊伍', win: '勝', lose: '敗', score: '球', rule: '違規項目' },
+        'en': { title: '⚡ WRO 2026 Match System', addBtn: '➕ Add Team', saveBtn: '💾 Save', histBtn: '📂 History', rank: 'Rankings', del: 'Del', team: 'Team', win: 'W', lose: 'L', score: 'Ball', rule: 'Violation' },
+        'ja': { title: '⚡ WRO 2026 大会管理システム', addBtn: '➕ チーム追加', saveBtn: '💾 保存', histBtn: '📂 履歴', rank: '順位', del: '削除', team: 'チーム', win: '勝', lose: '敗', score: '球', rule: '反則' },
+        'ko': { title: '⚡ WRO 2026 경기 관리 시스템', addBtn: '➕ 팀 추가', saveBtn: '💾 저장', histBtn: '📂 기록', rank: '순위', del: '삭제', team: '팀', win: '승', lose: '패', score: '골', rule: '위반' }
+    };
+
+    function translateUI(lang) {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if(langDict[lang] && langDict[lang][key]) el.innerText = langDict[lang][key];
+        });
+    }
+
+    // 新增隊伍與其他功能...
+    let teams = [];
+    function addTeam() { 
+        let tName = document.getElementById('tName').value;
+        if(tName) { teams.push({name: tName, w:0, l:0, s:0, checked:false}); document.getElementById('tName').value=''; refresh(); }
+    }
+    function refresh() { /* 重繪邏輯 */ }
+</script>
+</body>
+</html>
